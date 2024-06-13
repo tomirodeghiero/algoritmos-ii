@@ -1,4 +1,8 @@
+import java.util.Map;
+import java.util.HashMap;
+
 public class Combinatorics {
+    // Recursivo
     public static long comb(int n, int m) {
         if (n < 0 || m < 0)
             throw new IllegalArgumentException("Invalid arguments");
@@ -9,6 +13,7 @@ public class Combinatorics {
         return comb((n - 1), (m - 1)) + comb((n - 1), m);
     }
 
+    // Programación dinámica
     public static long combDP(int n, int m) {
         // Casos base
         if (n < 0 || m < 0)
@@ -24,6 +29,8 @@ public class Combinatorics {
         // Inicializar la primera columna y la diagonal principal de la tabla DP
         for (int i = 0; i <= n; i++) {
             dp[i][0] = 1;
+            if (i <= m)
+                dp[i][i] = 1;
         }
 
         // Llenar la tabla DP de manera bottom-up (de abajo hacia arriba) e iterativa
@@ -37,10 +44,30 @@ public class Combinatorics {
         return dp[n][m];
     }
 
+    // Memoization
+    private static Map<String, Long> cache = new HashMap<>();
+
+    public static long combMemo(int n, int m) {
+        if (n < 0 || m < 0)
+            throw new IllegalArgumentException("Invalid arguments");
+        if (m > n)
+            return 0;
+        if (m == 0 || n == m)
+            return 1;
+
+        String key = n + "," + m;
+        if (!cache.containsKey(key)) {
+            cache.put(key, combMemo(n - 1, m - 1) + combMemo(n - 1, m));
+        }
+        return cache.get(key);
+    }
+
     public static void main(String[] args) {
         int n = 5;
         int m = 2;
         System.out.println("C(" + n + ", " + m + ") = " + comb(n, m));
+        System.out.println("C(" + n + ", " + m + ") = " + combDP(n, m));
+        System.out.println("C(" + n + ", " + m + ") = " + combMemo(n, m));
     }
 
 }

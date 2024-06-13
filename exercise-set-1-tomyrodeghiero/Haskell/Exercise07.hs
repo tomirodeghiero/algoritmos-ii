@@ -15,7 +15,13 @@ interleave x (y:ys) = (x:y:ys) : map (y:) (interleave x ys)
 -- Subconjuntos
 subsets :: [a] -> [[a]]
 subsets [] = [[]]
-subsets (x:xs) = subsets xs ++ map (x:) (subsets xs)
+subsets [x] = [[x], []]
+subsets (x:xs) = ps ++ [(x:r) | r <- ps]
+  where ps = subsets x
+
+subsets' :: [a] -> [[a]]
+subsets' [] = [[]]
+subsets' (x:xs) = subsets' xs ++ map (x:) (subsets' xs)
 
 -- Sublistas (secuencias contiguas de una lista)
 sublists :: [a] -> [[a]]

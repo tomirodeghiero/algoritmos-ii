@@ -34,7 +34,7 @@ public class WineSelling {
     }
 
     public static void main(String[] args) {
-        int[] prices = { 2, 3, 5, 1, 4 }; // Ejemplo de precios de los vinos
+        int[] prices = { 2, 4, 6, 2, 5 }; // Ejemplo de precios de los vinos
         System.out.println("La ganancia máxima es: " + memoizedSellWines(prices));
     }
 }

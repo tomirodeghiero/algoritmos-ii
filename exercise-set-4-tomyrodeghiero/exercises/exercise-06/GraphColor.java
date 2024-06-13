@@ -1,14 +1,14 @@
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
 public class GraphColor {
 
+    // Clase interna estática para representar el grafo
     static class Graph {
-        int vertices;
-        LinkedList<Integer>[] adjacencyList;
+        int vertices; // Número de vértices en el grafo
+        LinkedList<Integer>[] adjacencyList; // Lista de adyacencia para representar el grafo
 
+        // Constructor para inicializar el grafo con un número de vértices dado
         public Graph(int vertices) {
             this.vertices = vertices;
             adjacencyList = new LinkedList[vertices];
@@ -17,48 +17,54 @@ public class GraphColor {
             }
         }
 
+        // Método para añadir una arista al grafo
         void addEdge(int src, int dest) {
             adjacencyList[src].add(dest);
-            adjacencyList[dest].add(src); // For undirected graph
+            adjacencyList[dest].add(src); // Para grafo no dirigido
         }
 
+        // Método para colorear el grafo usando un enfoque Greedy
         void colorGraph() {
-            int[] result = new int[vertices]; // Store colors assigned to vertices
-            Arrays.fill(result, -1); // No color is assigned initially
-            result[0] = 0; // Assign the first color to the first vertex
+            int[] result = new int[vertices]; // Array para almacenar los colores asignados a los vértices
+            Arrays.fill(result, -1); // Inicialmente, ningún vértice tiene color asignado
+            result[0] = 0; // Asignar el primer color al primer vértice
 
-            boolean[] available = new boolean[vertices]; // Colors available
+            boolean[] available = new boolean[vertices]; // Array para marcar los colores disponibles
             Arrays.fill(available, true);
 
+            // Iterar sobre todos los vértices para asignarles un color
             for (int u = 1; u < vertices; u++) {
-                // Process all adjacent vertices and flag their colors as unavailable
+                // Procesar todos los vértices adyacentes y marcar sus colores como no disponibles
                 for (int i : adjacencyList[u]) {
-                    if (result[i] != -1) { // If the color is assigned to vertex i
-                        available[result[i]] = false;
+                    if (result[i] != -1) { // Si el vértice i ya tiene un color asignado
+                        available[result[i]] = false; // Marcar ese color como no disponible
                     }
                 }
 
-                // Find the first available color
+                // Encontrar el primer color disponible
                 int color;
                 for (color = 0; color < vertices; color++) {
-                    if (available[color])
-                        break;
+                    if (available[color]) {
+                        break; // Encontrar el primer color disponible
+                    }
                 }
 
-                result[u] = color; // Assign the found color
+                result[u] = color; // Asignar el color encontrado al vértice u
 
-                // Reset the values back to true for the next iteration
+                // Resetear los valores a true para la siguiente iteración
                 Arrays.fill(available, true);
             }
 
-            // Print the result
-            for (int u = 0; u < vertices; u++)
+            // Imprimir el resultado
+            for (int u = 0; u < vertices; u++) {
                 System.out.println("Vertex " + u + " --->  Color " + result[u]);
+            }
         }
     }
 
+    // Método principal para ejecutar el programa
     public static void main(String[] args) {
-        Graph g1 = new Graph(5);
+        Graph g1 = new Graph(5); // Crear un grafo con 5 vértices
         g1.addEdge(0, 1);
         g1.addEdge(1, 2);
         g1.addEdge(2, 3);
@@ -68,6 +74,6 @@ public class GraphColor {
         g1.addEdge(1, 3);
 
         System.out.println("Coloring of graph 1");
-        g1.colorGraph();
+        g1.colorGraph(); // Colorear el grafo
     }
 }
